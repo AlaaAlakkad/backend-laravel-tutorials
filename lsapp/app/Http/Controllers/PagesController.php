@@ -8,8 +8,7 @@ class PagesController extends Controller
 {
     //
     public function index(){
-        $title = "test";
-        return view('pages.index') -> with('title', $title);
+        return view('pages.index');
     }
 
     public function about(){
