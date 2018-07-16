@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
         <a class="navbar-brand" href="/">{{config('app.name', 'LSAPP')}}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -31,5 +31,8 @@
             <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form> --}}
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item"><a class= "nav-link" href="/posts/create">Create Post</a></li>
+          <ul>
         </div>
 </nav>

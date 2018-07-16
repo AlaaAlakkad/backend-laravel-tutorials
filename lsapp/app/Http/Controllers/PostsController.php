@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use Stevebauman\Purify\Facades\Purify;
+
 
 class PostsController extends Controller
 {
@@ -27,7 +29,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -38,7 +40,16 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this -> validate($request, [
+            'title' => 'required|max:255',
+            'body' => 'required'
+        ]);
+
+        $post = new Post();
+        $post -> title = Purify::clean($request -> input('title'));
+        $post -> body =  Purify::clean($request -> input('body'));
+        $post -> save();
+        return redirect('/posts') -> withSuccess('Post Created');
     }
 
     /**
