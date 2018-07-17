@@ -48,6 +48,7 @@ class PostsController extends Controller
         $post = new Post();
         $post -> title = Purify::clean($request -> input('title'));
         $post -> body =  Purify::clean($request -> input('body'));
+        $post -> user_id = auth() -> user() -> id;
         $post -> save();
         return redirect('/posts') -> withSuccess('Post Created');
     }
