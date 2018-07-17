@@ -7,12 +7,15 @@
         {!!$post->body!!}
     </div>
     <small>Written on {{$post->created_at}} by {{$post->user->name}}</small>
-    <div class="mt-2 form-inline">
-        {!!Form::open(['action' => ['PostsController@destroy', $post->id], 'method' => 'POST'])!!}
-        {{Form::hidden('_method', 'DELETE')}}
-        {{Form::submit('Delete', ['class' => 'btn btn-danger btn-sm mr-2'])}}
-        {!!Form::close()!!}
-        <a href="/posts/{{$post -> id}}/edit" class="btn btn-outline-secondary btn-sm ml-2">Edit</a>
-
-    </div>
+    @auth
+        @if(Auth::user()->id == $post->user_id)
+            <div class="mt-2 form-inline">
+                <a href="/posts/{{$post -> id}}/edit" class="btn btn-outline-secondary btn-sm mr-auto">Edit</a>
+                {!!Form::open(['action' => ['PostsController@destroy', $post->id], 'method' => 'POST', 'class'=>'ml-auto'])!!}
+                {{Form::hidden('_method', 'DELETE')}}
+                {{Form::submit('Delete', ['class' => 'btn btn-danger btn-sm mr-2'])}}
+                {!!Form::close()!!}
+            </div>
+        @endif
+    @endauth
     @endsection('content')
