@@ -6,7 +6,7 @@
     <div>
         {!!$post->body!!}
     </div>
-    <small>Written on {{$post->created_at}}</small>
+    <small>Written on {{$post->created_at}} by {{$post->user->name}}</small>
     <div class="mt-2 form-inline">
         {!!Form::open(['action' => ['PostsController@destroy', $post->id], 'method' => 'POST'])!!}
         {{Form::hidden('_method', 'DELETE')}}
