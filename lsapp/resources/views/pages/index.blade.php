@@ -9,5 +9,5 @@
             <a href="#" class="btn btn-info my-2">Register</a>
         </p>
     </div>
-    @endsection('content')
+    @endsection
 

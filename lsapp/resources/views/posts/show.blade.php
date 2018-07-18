@@ -24,4 +24,4 @@
             </div>
         @endif
     @endauth
-    @endsection('content')
+    @endsection

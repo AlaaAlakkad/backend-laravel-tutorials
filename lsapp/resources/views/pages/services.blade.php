@@ -8,4 +8,4 @@
                 @endforeach
             </ul>
         @endif
-@endsection('content')
+@endsection
