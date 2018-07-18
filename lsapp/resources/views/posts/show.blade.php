@@ -1,12 +1,18 @@
 @extends('layouts.app')
 @section('content')
-    <a href="/posts" class="btn btn-outline-secondary btn-sm">Go Back</a>
-
-    <h1 class="mt-1">{{$post-> title}}</h1>
-    <div>
-        {!!$post->body!!}
+    <a href="/posts" class="btn btn-outline-secondary btn-sm mb-3">Go Back</a>
+    <div class="card">
+            <img class="card-img-top" src="/storage/cover_images/{{$post->cover_image}}">
+            <div class="card-body">
+              <h5 class="card-title">{{$post-> title}}</h5>
+              <p class="card-text">{!!$post->body!!}</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Written on {{$post->created_at}} by {{$post->user->name}}</small>
+            </div>
     </div>
-    <small>Written on {{$post->created_at}} by {{$post->user->name}}</small>
+
+
     @auth
         @if(Auth::user()->id == $post->user_id)
             <div class="mt-2 form-inline">

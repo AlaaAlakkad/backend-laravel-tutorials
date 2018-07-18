@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Post;
 use Stevebauman\Purify\Facades\Purify;
 
@@ -48,13 +49,17 @@ class PostsController extends Controller
     {
         $this -> validate($request, [
             'title' => 'required|max:255',
-            'body' => 'required'
+            'body' => 'required',
+            'cover_image' => 'image|nullable|max:1999'
         ]);
+
+
 
         $post = new Post();
         $post -> title = Purify::clean($request -> input('title'));
         $post -> body =  Purify::clean($request -> input('body'));
         $post -> user_id = auth() -> user() -> id;
+        $post -> cover_image = $this->handleImage($request);
         $post -> save();
         return redirect('/posts') -> withSuccess('Post Created');
     }
@@ -99,10 +104,13 @@ class PostsController extends Controller
             'title' => 'required|max:255',
             'body' => 'required'
         ]);
-
         $post = Post::find($id);
         $post -> title = Purify::clean($request -> input('title'));
         $post -> body =  Purify::clean($request -> input('body'));
+        if($request->hasFile('cover_image')){
+            Storage::delete('public/cover_images/'.$post->cover_image);
+            $post->cover_image = $this->handleImage($request);
+        }
         $post -> save();
         return redirect('/posts') -> withSuccess('Post Updated');
     }
@@ -119,7 +127,30 @@ class PostsController extends Controller
         if(auth()->user()->id !== $post->user_id){
             return redirect('/posts')->with('error', 'Unauthorized Page');
         }
+
+        if($post->cover_image !== 'noimage.jpg'){
+            Storage::delete('public/cover_images'.$post->cover_image);
+        }
         $post -> delete();
         return redirect('/posts') -> withSuccess('Post Deleted');
+    }
+
+    private function handleImage($request){
+        
+        $fileNameToStore;
+
+        if($request->hasFile('cover_image')){
+            // get file name with extension
+            $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext = $request->file('cover_image')->getClientOriginalExtension();
+            // add timpestamp to filename 
+            $fileNameToStore = $fileName.'_'.time().'.'.$ext;
+            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+        }else{
+            $fileNameToStore = 'noimage.jpg';
+        }
+
+        return $fileNameToStore;
     }
 }
